@@ -1,0 +1,1039 @@
+package com.ucr.crawler;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Vector;
+import java.util.concurrent.TimeUnit;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+public class homecrawler {
+
+	public static void main(String args[])
+			throws InterruptedException, ClassNotFoundException, SQLException, ParseException {
+		// String place = "anvik-ak";
+		// String place = "chicago-il";
+		// String place = "riverside-ca";
+		// crawlhomes(place);
+
+		String str1 = null;
+
+		String n = args[0];
+		if (n.equals("one")) {
+			for (int i = 1; i <= 30; ++i) {
+
+				if (i == 1) {
+					str1 = "DC";
+					System.out.println("DC");
+				}
+
+				else if (i == 2) {
+					str1 = "OH";
+					System.out.println("OH");
+				}
+
+				else if (i == 3) {
+					str1 = "MI";
+					System.out.println("MI");
+				}
+
+				else if (i == 4) {
+					str1 = "IN";
+					System.out.println("IN");
+				}
+
+				else if (i == 5) {
+					str1 = "KS";
+					System.out.println("KS");
+				}
+
+				else if (i == 6) {
+					str1 = "MD";
+				}
+
+				else if (i == 7) {
+					str1 = "CO";
+				}
+
+				else if (i == 8) {
+					str1 = "MT";
+				}
+
+				else if (i == 9) {
+					str1 = "UT";
+				}
+
+				else if (i == 10) {
+					str1 = "WY";
+				}
+				
+//				else if (i == 11) {
+//					str1 = "TX";
+//				}
+//
+//				else if (i == 12) {
+//					str1 = "MO";
+//				}
+//
+//				else if (i == 13) {
+//					str1 = "KY";
+//				}
+//
+//				else if (i == 14) {
+//					str1 = "WV";
+//				}
+//
+//				else if (i == 15) {
+//					str1 = "AL";
+//				}
+//
+//				else if (i == 16) {
+//					str1 = "NE";
+//				}
+//
+//				else if (i == 17) {
+//					str1 = "MS";
+//				}
+//
+//				else if (i == 18) {
+//					str1 = "ND";
+//				}
+//
+//				else if (i == 19) {
+//					str1 = "CT";
+//				}
+//
+//				else if (i == 20) {
+//					str1 = "HI";
+//				} 
+//				else if (i == 21) {
+//					str1 = "NY";
+//				}
+//
+//				else if (i == 22) {
+//					str1 = "FL";
+//				}
+//
+//				else if (i == 23) {
+//					str1 = "NC";
+//				}
+//
+//				else if (i == 24) {
+//					str1 = "OK";
+//				}
+//
+//				else if (i == 25) {
+//					str1 = "AR";
+//				}
+//
+//				else if (i == 26) {
+//					str1 = "LA";
+//				}
+//
+//				else if (i == 27) {
+//					str1 = "ME";
+//				}
+//
+//				else if (i == 28) {
+//					str1 = "SD";
+//				}
+//
+//				else if (i == 29) {
+//					str1 = "VT";
+//				}
+//
+//				else if (i == 30) {
+//					str1 = "NV";
+//				}
+
+				crawlhomes(str1);
+			}
+
+		}
+
+		if (n.equals("two")) {
+			for (int i = 1; i <= 10; ++i) {
+
+				if (i == 1) {
+					str1 = "TX";
+				}
+
+				else if (i == 2) {
+					str1 = "MO";
+				}
+
+				else if (i == 3) {
+					str1 = "KY";
+				}
+
+				else if (i == 4) {
+					str1 = "WV";
+				}
+
+				else if (i == 5) {
+					str1 = "AL";
+				}
+
+				else if (i == 6) {
+					str1 = "NE";
+				}
+
+				else if (i == 7) {
+					str1 = "MS";
+				}
+
+				else if (i == 8) {
+					str1 = "ND";
+				}
+
+				else if (i == 9) {
+					str1 = "CT";
+				}
+
+				else if (i == 10) {
+					str1 = "HI";
+				}
+
+				crawlhomes(str1);
+			}
+
+		}
+
+		if (n.equals("three")) {
+			for (int i = 1; i <= 10; ++i) {
+
+				if (i == 1) {
+					str1 = "NY";
+				}
+
+				else if (i == 2) {
+					str1 = "FL";
+				}
+
+				else if (i == 3) {
+					str1 = "NC";
+				}
+
+				else if (i == 4) {
+					str1 = "OK";
+				}
+
+				else if (i == 5) {
+					str1 = "AR";
+				}
+
+				else if (i == 6) {
+					str1 = "LA";
+				}
+
+				else if (i == 7) {
+					str1 = "ME";
+				}
+
+				else if (i == 8) {
+					str1 = "SD";
+				}
+
+				else if (i == 9) {
+					str1 = "VT";
+				}
+
+				else if (i == 10) {
+					str1 = "NV";
+				}
+
+				crawlhomes(str1);
+			}
+
+		}
+
+		if (n.equals("four")) {
+			for (int i = 1; i <= 10; ++i) {
+				if (i == 1) {
+					str1 = "CA";
+				}
+
+				else if (i == 2) {
+					str1 = "IA";
+				}
+
+				else if (i == 3) {
+					str1 = "VA";
+				}
+
+				else if (i == 4) {
+					str1 = "GA";
+				}
+
+				else if (i == 5) {
+					str1 = "WA";
+				}
+
+				else if (i == 6) {
+					str1 = "MA";
+				}
+
+				else if (i == 7) {
+					str1 = "OR";
+				}
+
+				else if (i == 8) {
+					str1 = "AK";
+				}
+
+				else if (i == 9) {
+					str1 = "ID";
+				}
+
+				else if (i == 10) {
+					str1 = "PR";
+				}
+
+				crawlhomes(str1);
+			}
+
+		}
+
+		if (n.equals("five")) {
+			for (int i = 1; i <= 10; ++i) {
+
+				if (i == 1) {
+					str1 = "IL";
+				}
+
+				else if (i == 2) {
+					str1 = "MN";
+				}
+
+				else if (i == 3) {
+					str1 = "WI";
+				}
+
+				else if (i == 4) {
+					str1 = "NJ";
+				}
+
+				else if (i == 5) {
+					str1 = "TN";
+				}
+
+				else if (i == 6) {
+					str1 = "SC";
+				}
+
+				else if (i == 7) {
+					str1 = "NM";
+				}
+
+				else if (i == 8) {
+					str1 = "AZ";
+				}
+
+				else if (i == 9) {
+					str1 = "NH";
+				}
+
+				else if (i == 10) {
+					str1 = "DE";
+				}
+
+				crawlhomes(str1);
+			}
+
+		}
+		if (n.equals("six")) {
+			for (int i = 1; i <= 2; ++i) {
+
+				if (i == 1) {
+					str1 = "RI";
+				}
+
+				else if (i == 2) {
+					str1 = "PA";
+				}
+
+				crawlhomes(str1);
+
+			}
+
+		}
+	}
+
+	// for sever:v75 use only
+	private static Connection newConnection() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		String urldb = "jdbc:mysql://localhost/homeDB";
+		String user = "mxu054";
+		String password = "123456";
+		Connection conn = DriverManager.getConnection(urldb, user, password);
+		return conn;
+	}
+
+	 //for local window10 use only
+//	private static Connection newConnection() throws ClassNotFoundException, SQLException {
+//		String driver = "com.mysql.cj.jdbc.Driver";
+//		String url = "jdbc:mysql://localhost:3306/home_data?&useSSL=false&serverTimezone=UTC";
+//		String username = "root";
+//		String password = "123456";
+//		Connection conn = null;
+//
+//		Class.forName(driver);
+//		conn = DriverManager.getConnection(url, username, password);
+//		if (!conn.isClosed())
+//			System.out.println("Database accessed！");
+//		return conn;
+//	}
+
+
+	public static void crawlhomes(String str1) {
+		// String city = "riverside";
+		// String state = "CA";
+		System.out.println(str1);
+		try {
+			Connection connection1 = newConnection();
+			Statement statement = null;
+			ResultSet resultSet = null;
+
+			statement = connection1.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+					java.sql.ResultSet.CONCUR_READ_ONLY);
+			statement.setFetchSize(Integer.MIN_VALUE);
+
+			resultSet = statement
+					.executeQuery("SELECT distinct(city),state_code from cities_extended WHERE state_code='" + str1
+							+ "' order by state_code");
+			// city list of one state
+			Vector<String> cities = new Vector<String>();
+			while (resultSet.next()) {
+				cities.add(resultSet.getString("city").toLowerCase());
+			}
+			connection1.close();
+			
+			//System.setProperty("webdriver.gecko.driver", "tools\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", "geckodriver");
+			
+//			FirefoxBinary firefoxBinary = new FirefoxBinary();
+//			firefoxBinary.addCommandLineOptions("--headless");
+//			FirefoxOptions firefoxOptions = new FirefoxOptions();
+//			firefoxOptions.setBinary(firefoxBinary);
+//			FirefoxDriver driver = new FirefoxDriver(firefoxOptions);
+//			FirefoxOptions  firefoxOptions = new FirefoxOptions();
+//			firefoxOptions.addArguments("--headless");
+//			firefoxOptions.addArguments("--foreground");
+//			firefoxOptions.addArguments("--no-remote");
+//			WebDriver driver = new FirefoxDriver(firefoxOptions);
+			
+			WebDriver driver = new FirefoxDriver();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(300, TimeUnit.SECONDS);
+			driver.manage().timeouts().setScriptTimeout(100, TimeUnit.SECONDS);
+
+
+			String stateCode = str1.toLowerCase();
+			for (String city : cities) {
+
+				// get total number of pages
+				int totalPages = 1;
+				Document document = null;
+				String page = null;
+				driver.get("https://www.homes.com/" + city + "-" + stateCode + "/homes-for-rent/");
+				Thread.sleep((int) (1000 + Math.random() * 2000));
+				page = driver.getPageSource();
+				document = Jsoup.parse(page);
+				if (!document.select("li[data-tl-object=SR-PaginationNumber]").isEmpty()) {
+					for (int i = 0; i < document.select("li[data-tl-object=SR-PaginationNumber]").size(); i++) {
+						int now = Integer.parseInt(document.select("li[data-tl-object=SR-PaginationNumber]").get(i)
+								.text().replaceAll("[^0-9]", ""));
+						if (now > totalPages)
+							totalPages = now;
+					}
+				}
+				System.out.println("total_pages: " + totalPages);
+
+				Connection connection = newConnection();
+
+				document = null;
+				page = null;
+				Vector<String> homeDetailLinks = new Vector<String>();
+
+				boolean is_refreshed = false;
+				boolean is_second_access = false;
+
+				for (int i = 1; i <= totalPages; i++) {
+					try {
+						if (is_second_access) {
+							is_second_access = false;
+							is_refreshed = false;
+						}
+						driver.get("https://www.homes.com/" + city + "-" + stateCode + "/homes-for-rent/p" + i);
+						System.out.println("https://www.homes.com/" + city + "-" + stateCode + "/homes-for-rent/p" + i);
+						Thread.sleep((int) (2000 + Math.random() * 2000));
+						page = null;
+						document = null;
+
+						page = driver.getPageSource();
+						document = Jsoup.parse(page);
+
+						// there exits results
+						Elements links = document.getElementsByTag("a");
+						for (Element link : links) {
+							String linkhref = link.attr("href");
+							// ignore ads and other useless links
+							if (linkhref.startsWith("/property/")&&linkhref.endsWith("#listing_status=FOR_RENT")) {
+								
+								// if current link is added into vector, check next
+								if (homeDetailLinks.contains("https://www.homes.com" + linkhref)) {
+									continue;
+								}
+								boolean flag = false;
+								statement = null;
+								resultSet = null;
+								statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+										java.sql.ResultSet.CONCUR_READ_ONLY);
+								statement.setFetchSize(Integer.MIN_VALUE);
+								resultSet = statement
+										.executeQuery("SELECT count(*) as num from homes_2018 WHERE home_url='"
+												+ "https://www.homes.com" + linkhref + "'");
+								while (resultSet.next()) {
+									int count = resultSet.getInt("num");
+									if (count != 0)
+										flag = true;
+								}
+								if (!flag) {
+									homeDetailLinks.add("https://www.homes.com" + linkhref);
+								}
+
+							}
+						}
+
+						if (is_refreshed)
+							is_refreshed = false;
+						System.out.println("links #: " + homeDetailLinks.size());
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						if (!is_refreshed) {
+							is_refreshed = true;
+							//driver.navigate().refresh();
+							i--;
+						} else {
+							is_second_access = true;
+						}
+					}
+
+				}
+				
+				connection.close();
+
+				// to give not-found-page one more chance
+				is_refreshed = false;
+				is_second_access = false;
+
+				for (int k = 0; k < homeDetailLinks.size(); k++) {
+					try {
+						if (is_second_access) {
+							is_refreshed = false;
+							is_second_access = false;
+						}
+						if (is_refreshed) {
+							is_second_access = true;
+						}
+						String state = null;
+						String website = null;
+						String home_url = homeDetailLinks.get(k);
+						String property_type = null;
+						String streetaddr = null;
+						String zipcode = null;
+						String numbed = null;
+						String num_bath_full = null;
+						String rentalprice_min = null;
+						String rentalprice_max = null;
+						String yearbuilt = null;
+						String floor_plan = null;
+						String garage = null;
+						String lotsize = null;
+						String stories = null;
+						String size = null;
+						String pool = null;
+						String style = null;
+						String stainlessAppliances = null;
+						String fireplace = null;
+						String description = null;
+						String datelisted = null;
+
+						String MLSNumber = null;
+						String dogAllowed = null;
+						String catAllowed = null;
+						Timestamp crawl_time = null;
+
+						page = null;
+						document = null;
+
+						System.out.println(home_url);
+
+						driver.get(homeDetailLinks.get(k));
+
+						// WebDriverWait wait = new WebDriverWait(driver,
+						// 1);
+						// wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".property-info__title")));
+						// a tricky solution to avoid crawl wrong data(crawl
+						// data on
+						// previous page)
+						Thread.sleep((int) (2000 + Math.random() * 3000));
+						page = driver.getPageSource();
+						document = Jsoup.parse(page);
+						// WebDriverWait wait = new WebDriverWait(driver,
+						// 10);
+						// wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".property-info__title")));
+
+						// crawl basic info: crawl_time, website,
+						// rental_price,
+						// address, zipcode
+						// numbed, num_bath, size
+						crawl_time = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+						if (!document.select(".property-info__title").isEmpty()) {
+							website = document.select(".property-info__title").text();
+						}
+						if (!document.select("head > title").isEmpty()) {
+							String streetaddr_full = document.select("head > title").text().split("\\|")[0];
+							String parts[] = streetaddr_full.split(",");
+							if (parts.length == 3) {
+								streetaddr = parts[0];
+								city = parts[1].replaceAll("[^a-zA-Z]", "");
+								state = parts[2].replaceAll("[^a-zA-Z]", "");
+								zipcode = parts[2].replaceAll("[^0-9]", "");
+							} else {
+								streetaddr = parts[0];
+								state = stateCode.toUpperCase();
+							}
+
+						}
+						if (!document.select("section > aside[class=property-info__details details font-size--m "
+								+ "sa-child sa-child--3]").isEmpty()) {
+							String parts[] = document
+									.select("section > aside[class=property-info__details details font-size--m "
+											+ "sa-child sa-child--3] > ul > li > p")
+									.text().split(" ");
+							rentalprice_min = parts[0].replaceAll("[^0-9]", "");
+							if (parts.length > 2) {
+								rentalprice_max = parts[2].replaceAll("[^0-9]", "");
+							}
+						}
+						if (!document.select("section > aside > ul > li[class=details__attribute details__bedrooms "
+								+ "property-info__bedrooms]").isEmpty()) {
+							numbed = document
+									.select("section > aside > ul > li[class=details__attribute "
+											+ "details__bedrooms property-info__bedrooms]")
+									.text().replaceAll("[^0-9]", "");
+						}
+						if (!document.select("section > aside > ul > li[class=details__attribute "
+								+ "details__bathrooms property-info__bathrooms]").isEmpty()) {
+							num_bath_full = document
+									.select("section > aside > ul > li[class=details__attribute "
+											+ "details__bathrooms property-info__bathrooms]")
+									.text().replaceAll("[^0-9]", "");
+						}
+						if (!document.select("section > aside > ul > li[class=details__attribute "
+								+ "details__square-footage property-info__square-footage]").isEmpty()) {
+							size = document
+									.select("section > aside > ul > li[class=details__attribute "
+											+ "details__square-footage property-info__square-footage]")
+									.text().replaceAll("[^0-9]", "");
+						}
+
+						// crawl overview/description
+						if (!document.select("p[class=overview__description]").isEmpty()) {
+							// get lower-case string
+							description = document.select("p[class=overview__description]").text();
+							String descriptionCopy = description.toLowerCase();
+
+							if (descriptionCopy.contains("garage")) {
+								garage = "1";
+							} else {
+								garage = "0";
+							}
+
+							if (descriptionCopy.contains(" story") || descriptionCopy.contains(" stories")) {
+								stories = "1";
+							} else {
+								stories = "0";
+							}
+
+							if (descriptionCopy.contains("stainess")) {
+								stainlessAppliances = "1";
+							} else {
+								stainlessAppliances = "0";
+							}
+						}
+
+						// crawl rental details
+						if (!document.select("section[class=home-details__list list] > ul > li > span").isEmpty()) {
+							for (int i = 0; i < document
+									.select("section[class=home-details__list list]" + " > ul > li > span")
+									.size(); i = i + 2) {
+								String temp = document
+										.select("section[class=home-details__list list]" + " > ul > li > span").get(i)
+										.text();
+								if (14 == i && i + 1 < document
+										.select("section[class=home-details__list list] > ul >" + " li > span").size()
+										&& !document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "").equals("")) {
+									i--;
+									continue;
+								}
+								if (i <= 14) {
+									if (temp.equalsIgnoreCase("property type")) {
+										property_type = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+									}
+									if (temp.equalsIgnoreCase("exterior finish")) {
+										style = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+									}
+									if (temp.equalsIgnoreCase("year built")) {
+										yearbuilt = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+									}
+									if (temp.equalsIgnoreCase("lot size")) {
+										lotsize = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+									}
+									if (temp.equalsIgnoreCase("fireplace")) {
+										fireplace = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+										fireplace = fireplace.equalsIgnoreCase("yes") ? "1" : "0";
+									}
+								} else {
+									if (temp.equalsIgnoreCase("pool")) {
+										pool = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+										pool = pool.equalsIgnoreCase("yes") ? "1" : "0";
+									}
+									if (temp.equalsIgnoreCase("garage")) {
+										garage = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text().replaceAll("[-]", "");
+										garage = garage.equalsIgnoreCase("yes") ? "1" : "0";
+									}
+
+									// there are several types info to
+									// indicate
+									// the
+									// pets allowed info
+									if (temp.equalsIgnoreCase("pets allowed")
+											|| temp.equalsIgnoreCase("pet friendly")) {
+										String temp2 = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text();
+										if (temp2.equalsIgnoreCase("yes")) {
+											dogAllowed = "1";
+											catAllowed = "1";
+										} else if (temp2.equalsIgnoreCase("no")) {
+											dogAllowed = "0";
+											catAllowed = "0";
+										}
+									}
+									if (temp.equalsIgnoreCase("cats allowed")) {
+										String temp2 = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text();
+										if (temp2.equalsIgnoreCase("yes")) {
+											catAllowed = "1";
+										} else if (temp2.equalsIgnoreCase("no")) {
+											catAllowed = "0";
+										}
+									}
+									if (temp.equalsIgnoreCase("dogs allowed")) {
+										String temp2 = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text();
+										if (temp2.equalsIgnoreCase("yes")) {
+											dogAllowed = "1";
+										} else if (temp2.equalsIgnoreCase("no")) {
+											dogAllowed = "0";
+										}
+									}
+									if (temp.equalsIgnoreCase("pets") || temp.equalsIgnoreCase("pet")) {
+										String temp2 = document
+												.select("section[class=home-details__list list]" + " > ul > li > span")
+												.get(i + 1).text();
+										if (temp2.equalsIgnoreCase("no pets")) {
+											catAllowed = "0";
+											dogAllowed = "0";
+										} else if (temp2.equalsIgnoreCase("cats allowed")) {
+											catAllowed = "1";
+										} else if (temp2.equalsIgnoreCase("dogs allowed")) {
+											dogAllowed = "1";
+										} else if (temp2.equalsIgnoreCase("no dogs allowed")) {
+											dogAllowed = "0";
+										} else if (temp2.equalsIgnoreCase("no cats allowed")) {
+											catAllowed = "0";
+										}
+									}
+								}
+
+							}
+						}
+
+						// crawl floor_plan for Apt.
+						if (!document.select("div[class=floorplan__sub-heading]").isEmpty()) {
+							for (int i = 0; i < document.select("div[class=floorplan__sub-heading]").size(); i++) {
+								floor_plan += document.select("div[class=floorplan__sub-heading]").get(i).text() + ", ";
+							}
+							floor_plan = floor_plan.substring(4, floor_plan.length());
+							floor_plan = floor_plan.substring(0, floor_plan.length() - 2);
+						}
+
+						// find MLS Number，date listed
+						if (!document.select("section[class=mls__list sa-child sa-child--1 list] > ul > li > span")
+								.isEmpty()) {
+							for (int i = 0; i < document
+									.select("section[class=mls__list " + "sa-child sa-child--1 list] > ul > li > span")
+									.size(); i++) {
+								if (document
+										.select("section[class=mls__list "
+												+ "sa-child sa-child--1 list] > ul > li > span")
+										.get(i).text().equalsIgnoreCase("MLS Number")) {
+									MLSNumber = document.select(
+											"section[class=mls__list " + "sa-child sa-child--1 list] > ul > li > span")
+											.get(i + 1).text();
+								}
+								if (document
+										.select("section[class=mls__list "
+												+ "sa-child sa-child--1 list] > ul > li > span")
+										.get(i).text().equalsIgnoreCase("Listed")) {
+									datelisted = document.select(
+											"section[class=mls__list " + "sa-child sa-child--1 list] > ul > li > span")
+											.get(i + 1).text();
+									break;
+								}
+							}
+						}
+
+						// output test
+						System.out.println("website: " + website);
+						// System.out.println("street_address: " +
+						// streetaddr);
+						// System.out.println("zipcode: " + zipcode);
+						// System.out.println("rentalprice_min: " +
+						// rentalprice_min);
+						// System.out.println("rentalprice_max: " +
+						// rentalprice_max);
+						// System.out.println("numbed: " + numbed);
+						// System.out.println("num_bath_full: " +
+						// num_bath_full);
+						// System.out.println("size: " + size);
+						// System.out.println("MLS Number: " + MLSNumber);
+						// System.out.println("datelisted: " + datelisted);
+						// System.out.println("Property Type: " +
+						// property_type);
+						// System.out.println("Exterior Finish: " + style);
+						// System.out.println("Year Built: " + yearbuilt);
+						// System.out.println("lot size: " + lotsize);
+						// System.out.println("fireplace: " + fireplace);
+						// System.out.println("cats: " + catAllowed);
+						// System.out.println("dogs: " + dogAllowed);
+						// System.out.println("pool: " + pool);
+						// System.out.println("floor plan: " + floor_plan);
+						// System.out.println("garage: " + garage);
+						// System.out.println("stories: " + stories);
+						// System.out.println("stainlessAppliances: " +
+						// stainlessAppliances);
+						// System.out.println("description: " +
+						// description);
+						if (website != null) {
+							// write to database
+							Connection connection2 = newConnection();
+							String sqlString = "insert ignore into homes_2018(website,home_url,property_type,streetaddr,city,state,zipcode,"
+									+ "numbed,num_bath_full,rentalprice_min,rentalprice_max,yearbuilt,floor_plan,garage,lotsize,"
+									+ "stories,size,pool,style,stainlessAppliances,fireplace,description,crawl_time,datelisted,"
+									+ "dogAllowed,catAllowed,MLSNumber) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							PreparedStatement preparedStatement = connection2.prepareStatement(sqlString);
+							preparedStatement.setString(1, "homes.com");
+							preparedStatement.setString(2, home_url.trim());
+							if (property_type != null && !property_type.equals("")) {
+								preparedStatement.setString(3, property_type.trim());
+							} else {
+								preparedStatement.setNull(3, Types.VARCHAR);
+							}
+							if (streetaddr != null && !streetaddr.equals("")) {
+								preparedStatement.setString(4, streetaddr.trim());
+							} else {
+								preparedStatement.setNull(4, Types.VARCHAR);
+							}
+							preparedStatement.setString(5, city.trim());
+							preparedStatement.setString(6, state.trim());
+							if (zipcode != null && !zipcode.equals("")) {
+								preparedStatement.setInt(7, Integer.parseInt(zipcode.trim()));
+							} else {
+								preparedStatement.setNull(7, Types.INTEGER);
+							}
+							if (numbed != null && !numbed.equals("")) {
+								preparedStatement.setInt(8, Integer.parseInt(numbed.trim()));
+							} else {
+								preparedStatement.setInt(8, -1);
+							}
+							if (num_bath_full != null && !num_bath_full.equals("")) {
+								preparedStatement.setInt(9, Integer.parseInt(num_bath_full.trim()));
+							} else {
+								preparedStatement.setInt(9, -1);
+							}
+							if (rentalprice_min != null && !rentalprice_min.equals("")) {
+								preparedStatement.setInt(10, Integer.parseInt(rentalprice_min.trim()));
+							} else {
+								preparedStatement.setInt(10, -1);
+							}
+							if (rentalprice_max != null && !rentalprice_max.equals("")) {
+								preparedStatement.setInt(11, Integer.parseInt(rentalprice_max.trim()));
+							} else {
+								preparedStatement.setInt(11, -1);
+							}
+							if (yearbuilt != null && !yearbuilt.equals("")) {
+								preparedStatement.setInt(12, Integer.parseInt(yearbuilt.trim()));
+							} else {
+								preparedStatement.setNull(12, Types.INTEGER);
+							}
+							if (floor_plan != null && !floor_plan.equals("")) {
+								preparedStatement.setString(13, floor_plan.trim());
+							} else {
+								preparedStatement.setString(13, "N/A");
+							}
+							if (garage != null && !garage.equals("")) {
+								preparedStatement.setInt(14, Integer.parseInt(garage.trim()));
+							} else {
+								preparedStatement.setNull(14, Types.INTEGER);
+							}
+							if (lotsize != null && !lotsize.equals("")) {
+								preparedStatement.setInt(15, (int) Double.parseDouble(lotsize.trim()));
+							} else {
+								preparedStatement.setNull(15, Types.INTEGER);
+							}
+							if (stories != null && !stories.equals("")) {
+								preparedStatement.setInt(16, Integer.parseInt(stories.trim()));
+							} else {
+								preparedStatement.setNull(16, Types.INTEGER);
+							}
+							preparedStatement.setInt(17,
+									!size.equals("") && size != null ? Integer.parseInt(size.trim()) : -1);
+							if (pool != null) {
+								preparedStatement.setInt(18, Integer.parseInt(pool.trim()));
+							} else {
+								preparedStatement.setNull(18, Types.TINYINT);
+							}
+							if (style != null && !style.equals("")) {
+								preparedStatement.setString(19, style.trim());
+							} else {
+								preparedStatement.setNull(19, Types.VARCHAR);
+							}
+							if (stainlessAppliances != null) {
+								preparedStatement.setInt(20, Integer.parseInt(stainlessAppliances.trim()));
+							} else {
+								preparedStatement.setNull(20, Types.TINYINT);
+							}
+							if (fireplace != null) {
+								preparedStatement.setInt(21, Integer.parseInt(fireplace.trim()));
+							} else {
+								preparedStatement.setNull(21, Types.TINYINT);
+							}
+							preparedStatement.setString(22, description != null ? description.trim() : null);
+							preparedStatement.setTimestamp(23, crawl_time);
+							if (datelisted != null) {
+								SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+								preparedStatement.setDate(24, new java.sql.Date(sdf.parse(datelisted).getTime()));
+							} else {
+								preparedStatement.setNull(24, Types.DATE);
+							}
+							if (dogAllowed != null) {
+								preparedStatement.setInt(25, Integer.parseInt(dogAllowed.trim()));
+							} else {
+								preparedStatement.setNull(25, Types.TINYINT);
+							}
+							if (catAllowed != null) {
+								preparedStatement.setInt(26, Integer.parseInt(catAllowed.trim()));
+							} else {
+								preparedStatement.setNull(26, Types.TINYINT);
+							}
+							preparedStatement.setString(27, MLSNumber);
+							preparedStatement.executeUpdate();
+							preparedStatement.close();
+							connection2.close();
+							is_refreshed = false;
+							is_second_access = false;
+						} else {
+							if (!is_refreshed) {
+								//driver.navigate().refresh();
+								is_refreshed = true;
+								k = (k != 0) ? --k : k;
+							} else {
+								FileWriter fileWriter = new FileWriter("check_url.txt", true);
+								BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+								bufferedWriter.write(homeDetailLinks.get(k) + "\r\n");
+								bufferedWriter.close();
+								fileWriter.close();
+							}
+						}
+
+						// download page source codes
+						if (MLSNumber != null) {
+							FileWriter fileWriter = new FileWriter("source_codes/" + city + "_" + state + "_" + k + "_"
+									+ MLSNumber.replaceAll("[^0-9a-zA-Z]", "") + ".txt", true);
+							BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+							bufferedWriter.write("" + page);
+							bufferedWriter.close();
+							fileWriter.close();
+						}
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						try {
+							e.printStackTrace();
+							if (!is_refreshed) {
+								//driver.navigate().refresh();
+								is_refreshed = true;
+								k = (k != 0) ? --k : k;
+							} else {
+								FileWriter fileWriter = new FileWriter("check_url.txt", true);
+								BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+								bufferedWriter.write(homeDetailLinks.get(k) + "\r\n");
+								bufferedWriter.close();
+								fileWriter.close();
+							}
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+			driver.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+}
