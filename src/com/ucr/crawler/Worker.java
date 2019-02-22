@@ -50,27 +50,27 @@ public class Worker implements Runnable {
 	}
 	
 	// for sever:v75 use only
-	private static Connection newConnection() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		String urldb = "jdbc:mysql://localhost/homeDB";
-		String user = "mxu054";
-		String password = "123456";
-		Connection conn = DriverManager.getConnection(urldb, user, password);
-		return conn;
-	}
-
-	 //for local window10 use only
 //	private static Connection newConnection() throws ClassNotFoundException, SQLException {
-//		String driver = "com.mysql.cj.jdbc.Driver";
-//		String url = "jdbc:mysql://localhost:3306/home_data?&useSSL=false&serverTimezone=UTC";
-//		String username = "root";
+//		Class.forName("com.mysql.jdbc.Driver");
+//		String urldb = "jdbc:mysql://localhost/homeDB";
+//		String user = "mxu054";
 //		String password = "123456";
-//		Connection conn = null;
-//
-//		Class.forName(driver);
-//		conn = DriverManager.getConnection(url, username, password);
+//		Connection conn = DriverManager.getConnection(urldb, user, password);
 //		return conn;
 //	}
+
+	 //for local window10 use only
+	private static Connection newConnection() throws ClassNotFoundException, SQLException {
+		String driver = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/home_data?&useSSL=false&serverTimezone=UTC";
+		String username = "root";
+		String password = "123456";
+		Connection conn = null;
+
+		Class.forName(driver);
+		conn = DriverManager.getConnection(url, username, password);
+		return conn;
+	}
 	
 	public static void crawlhomes(String str1, String recordType, int life) {
 		/*
@@ -120,8 +120,8 @@ public class Worker implements Runnable {
 				e2.printStackTrace();
 			}
 			
-			//System.setProperty("webdriver.gecko.driver", "tools\\geckodriver.exe");
-			System.setProperty("webdriver.gecko.driver", "geckodriver");
+			System.setProperty("webdriver.gecko.driver", "tools\\geckodriver.exe");
+			//System.setProperty("webdriver.gecko.driver", "geckodriver");
 			
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
 			

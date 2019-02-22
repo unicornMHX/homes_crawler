@@ -111,6 +111,50 @@ public class ParserWorker implements Runnable {
 					++total_num;
 					System.out.println(threadid + ": " + total_num + " " + file + " " + home_url);
 					crawl_time = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+					
+					/*
+					 * we firstly find title information (since the accuracy of address info is higher).
+					 * If not exist, we find another position which may store address info. 
+					 * =====================================START=====================================================
+					 */
+					String streetaddr_full = "";
+					if (!document.select("head > title").isEmpty()) {
+						String title = document.select("head > title").text();
+						streetaddr_full = title.split("\\|")[0];
+					}else {
+						streetaddr_full = document.select("section[class=listing-details__property-info"
+								+ " page__section page__inset property-info"
+								+ " scroll-appear scroll-appear--animate-children scroll-appear-active] > h1").text();
+					}
+					
+					String address_parts[] = streetaddr_full.split(",");
+					if (address_parts.length == 3) {
+						/*
+						 * sample style: 25 Arthur Drive 1, South Windsor,
+						 * CT 06074 | Homes.com
+						 */
+						streetaddr = address_parts[0];
+						city = address_parts[1].replaceAll("[^a-zA-Z\\s]", "").trim();
+						state = address_parts[2].replaceAll("[^a-zA-Z]", "");
+						zipcode = address_parts[2].replaceAll("[^0-9]", "");
+					} else if (address_parts.length == 2) {
+						/*
+						 * sample style: House For Rent in
+						 * Lauderdale-by-the-sea, FL 33308 - 200005731542 |
+						 * Homes.com
+						 */
+						streetaddr = address_parts[0];
+						city = streetaddr.split(" in ")[1].trim();
+						state = address_parts[1].trim().split("\\s")[0].trim();
+						zipcode = address_parts[1].split(" - ")[0].replaceAll("[^0-9]", "");
+					} else if (address_parts.length == 4) {
+						streetaddr = address_parts[0];
+						city = (address_parts[1] + address_parts[2]).replaceAll("[^a-zA-Z\\s]", "").trim();
+						state = address_parts[3].replaceAll("[^a-zA-Z]", "");
+						zipcode = address_parts[3].replaceAll("[^0-9]", "");
+					}
+					
+					//============================================END==============================================
 
 					/*
 					 * check if the home has multiple floor plans If so, we need
@@ -172,49 +216,6 @@ public class ParserWorker implements Runnable {
 										+ " scroll-appear scroll-appear--animate-children scroll-appear-active] > aside")
 								.isEmpty()) {
 							
-							/*
-							 * we firstly find title information (since the accuracy of address info is higher).
-							 * If not exist, we find another position which may store address info. 
-							 * =====================================START=====================================================
-							 */
-							String streetaddr_full = "";
-							if (!document.select("head > title").isEmpty()) {
-								String title = document.select("head > title").text();
-								streetaddr_full = title.split("\\|")[0];
-							}else {
-								streetaddr_full = document.select("section[class=listing-details__property-info"
-										+ " page__section page__inset property-info"
-										+ " scroll-appear scroll-appear--animate-children scroll-appear-active] > h1").text();
-							}
-							
-							String address_parts[] = streetaddr_full.split(",");
-							if (address_parts.length == 3) {
-								/*
-								 * sample style: 25 Arthur Drive 1, South Windsor,
-								 * CT 06074 | Homes.com
-								 */
-								streetaddr = address_parts[0];
-								city = address_parts[1].replaceAll("[^a-zA-Z\\s]", "").trim();
-								state = address_parts[2].replaceAll("[^a-zA-Z]", "");
-								zipcode = address_parts[2].replaceAll("[^0-9]", "");
-							} else if (address_parts.length == 2) {
-								/*
-								 * sample style: House For Rent in
-								 * Lauderdale-by-the-sea, FL 33308 - 200005731542 |
-								 * Homes.com
-								 */
-								streetaddr = address_parts[0];
-								city = streetaddr.split(" in ")[1].trim();
-								state = address_parts[1].trim().split("\\s")[0].trim();
-								zipcode = address_parts[1].split(" - ")[0].replaceAll("[^0-9]", "");
-							} else if (address_parts.length == 4) {
-								streetaddr = address_parts[0];
-								city = (address_parts[1] + address_parts[2]).replaceAll("[^a-zA-Z\\s]", "").trim();
-								state = address_parts[3].replaceAll("[^a-zA-Z]", "");
-								zipcode = address_parts[3].replaceAll("[^0-9]", "");
-							}
-							
-							//============================================END==============================================
 							
 							String parts[] = document
 									.select("section[class=listing-details__property-info page__section page__inset"
@@ -274,12 +275,14 @@ public class ParserWorker implements Runnable {
 						}
 
 						if (!document
-								.select("section[class=page__content listing-details__content] > aside > ul > "
+								.select("section[class=listing-details__property-info page__section page__inset property-info "
+										+ "scroll-appear scroll-appear--animate-children scroll-appear-active] > aside > ul > "
 										+ "li[class=details__attribute "
 										+ "details__square-footage property-info__square-footage]")
 								.isEmpty()) {
 							size.add(document
-									.select("section[class=page__content listing-details__content] > aside > ul > "
+									.select("section[class=listing-details__property-info page__section page__inset property-info "
+											+ "scroll-appear scroll-appear--animate-children scroll-appear-active] > aside > ul > "
 											+ "li[class=details__attribute "
 											+ "details__square-footage property-info__square-footage]")
 									.text().replaceAll("[^0-9]", ""));
@@ -625,26 +628,26 @@ public class ParserWorker implements Runnable {
 		return new String(filecontent, encoding);
 	}
 
-	// for local window10 use only
-//	private Connection newConnection() throws ClassNotFoundException, SQLException {
-//		String driver = "com.mysql.cj.jdbc.Driver";
-//		String url = "jdbc:mysql://localhost:3306/home_data?&useSSL=false&serverTimezone=UTC";
-//		String username = "root";
-//		String password = "123456";
-//		Connection conn = null;
-//
-//		Class.forName(driver);
-//		conn = DriverManager.getConnection(url, username, password);
-//		return conn;
-//	}
-	
-	// for sever:v75 use only
-	private static Connection newConnection() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		String urldb = "jdbc:mysql://localhost/homeDB";
-		String user = "mxu054";
+//	 for local window10 use only
+	private Connection newConnection() throws ClassNotFoundException, SQLException {
+		String driver = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/home_data?&useSSL=false&serverTimezone=UTC";
+		String username = "root";
 		String password = "123456";
-		Connection conn = DriverManager.getConnection(urldb, user, password);
+		Connection conn = null;
+
+		Class.forName(driver);
+		conn = DriverManager.getConnection(url, username, password);
 		return conn;
 	}
+	
+	// for sever:v75 use only
+//	private static Connection newConnection() throws ClassNotFoundException, SQLException {
+//		Class.forName("com.mysql.jdbc.Driver");
+//		String urldb = "jdbc:mysql://localhost/homeDB";
+//		String user = "mxu054";
+//		String password = "123456";
+//		Connection conn = DriverManager.getConnection(urldb, user, password);
+//		return conn;
+//	}
 }
