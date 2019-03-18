@@ -10,7 +10,12 @@ public class homecrawler {
 	 * 1. type: "crawler" or "parser"
 	 * 2. record type: "rent" or "sale"
 	 * 3. number of threads
-	 * 4. group id: range from 1 to 5. Otherwise, only one group
+	 * 	  if first parameter is "crawler": the total number of threads
+	 * 	  if first parameter is "sale": the # of threads for each API key
+	 * 4. if first parameter is "crawler":
+	 * 		group id: range from 1 to 5. Otherwise, only one group
+	 * 	  if first parameter is "sale":
+	 * 		file path and name which contains Here Geocoding API keys
 	 * 5. life of browser: range from 10 to 1000 
 	 *    (destroy current browser and create a new one after visit assigned number of pages)
 	 *    larger # threads => smaller life
@@ -84,8 +89,8 @@ public class homecrawler {
 		}
 		else if (type.equals("parser")) {
 			
-			Parser parser = new Parser(recordType,threadNum);
-			
+			String filePath = args[3].trim();
+			Parser parser = new Parser(recordType,threadNum,filePath);
 			parser.runParser();
 		
 			

@@ -18,23 +18,6 @@ public class GetLatLng {
 	public static void main(String[] args) throws Exception {
 
 		// 1600+Amphitheatre+Parkway,+Mountain+View,+CA
-
-		// String apikey = "AIzaSyBgvoZkIBE55I5iBk2lLJMmPknbhDZ5B9g"; 
-		// over query limit
-
-		// String apikey = "AIzaSyBMyFqlMBCKoQIA07Bw383v265OoDjuOTc";
-		// request_denied
-		// String apikey = "AIzaSyDrcgTSJnNrFMeJqnxvkc67dsnNuDJ0fcs"; 
-		// over query limit
-		// String apikey = "AIzaSyCWmaqrEmUWwwcbSiKRDS2cr06wN2YkZZY";//
-		// request_denied
-
-		
-		
-		// homesCrawler001@gmail.com 
-		//AIzaSyClwgh9wXaVn0cKkUqlOzSDfpbAbYjofLo
-
-		//String apikey = "AIzaSyDEA-8bdEPlTF1mKgYJlakxyPYijXJuVvM";
 		
 		/*
 		 * input argument:

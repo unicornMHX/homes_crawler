@@ -25,17 +25,22 @@ public class ParserWorker implements Runnable {
 
 	private Vector<File> files;
 	private String recordType;
+	private String hereId;
+	private String hereCode;
 
-	public ParserWorker(Vector<File> files, String recordType) {
+	public ParserWorker(Vector<File> files, String recordType, String hereId, String hereCode) {
 		// TODO Auto-generated constructor stub
 		this.files = files;
 		this.recordType = recordType;
+		this.hereId = hereId;
+		this.hereCode = hereCode;
 	}
 
 	public void run() {
 		try {
 			int total_num = 0;
 			String threadid = Thread.currentThread().getName();
+			System.out.println(threadid+": "+files.size());
 			for (File file : files) {
 				String string = "";
 				try {
@@ -68,6 +73,8 @@ public class ParserWorker implements Runnable {
 				String dogAllowed = null;
 				String catAllowed = null;
 				Timestamp crawl_time = null;
+				String latitude = null;
+				String longitude = null;
 				
 				
 
@@ -463,14 +470,38 @@ public class ParserWorker implements Runnable {
 						}
 					}
 
+					/*
+					 * Convert address into latitude and longitude
+					 * 
+					 */
+					if (streetaddr == null || streetaddr.equals("") || streetaddr.toLowerCase().startsWith("foreclosure")
+							|| city == null || state == null) {
+						latitude = null;
+						longitude = null;
+					} else {
+						String address = streetaddr.replaceAll(" ", "+").replaceAll("[^0-9a-zA-Z\\+]", "") + ",+"
+								+ city.replaceAll(" ", "+") + ",+" + state + "+" + zipcode;
+						String latLong[] = ToolFuns.getLatLongHere(address, hereId,hereCode);
+						if(latLong == null){
+							latitude = null;
+							longitude = null;
+						}else {
+							latitude = latLong[0];
+							longitude = latLong[1];
+						}
+					}
+					
+					
+					
 					// insert into database
 					Connection connection2 = newConnection();
 					for (int i = 0; i < floor_plan.size(); i++) {
 						String sqlString = "insert ignore into homes_2018(website,home_url,property_type, record_type, "
 								+ "streetaddr,city,state,zipcode,numbed,num_bath_full,rentalprice_min,rentalprice_max,"
 								+ "yearbuilt,floor_plan,garage,lotsize,stories,size,pool,style,stainlessAppliances,"
-								+ "fireplace,description,crawl_time,datelisted,dogAllowed,catAllowed,MLSNumber,saleprice) "
-								+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+								+ "fireplace,description,crawl_time,datelisted,dogAllowed,catAllowed,MLSNumber,saleprice,"
+								+ "latitude, longitude) "
+								+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 						PreparedStatement preparedStatement = connection2.prepareStatement(sqlString);
 						preparedStatement.setString(1, "https://www.homes.com/");
 						preparedStatement.setString(2, home_url.trim());
@@ -590,6 +621,16 @@ public class ParserWorker implements Runnable {
 							preparedStatement.setInt(29, Integer.parseInt(saleprice.trim()));
 						} else {
 							preparedStatement.setInt(29, -1);
+						}
+						if (latitude == null || latitude.equals("")) {
+							preparedStatement.setNull(30, Types.DOUBLE);
+						} else {
+							preparedStatement.setDouble(30, Double.parseDouble(latitude));
+						}
+						if (longitude == null || longitude.equals("")) {
+							preparedStatement.setNull(31, Types.DOUBLE);
+						} else {
+							preparedStatement.setDouble(31, Double.parseDouble(longitude));
 						}
 						preparedStatement.executeUpdate();
 						preparedStatement.close();
